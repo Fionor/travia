@@ -1,22 +1,32 @@
-var Game = function () {
-  var players = new Array();
-  var places = new Array(6);
-  var purses = new Array(6);
-  var inPenaltyBox = new Array(6);
+class Game {
 
-  var popQuestions = new Array();
-  var scienceQuestions = new Array();
-  var sportsQuestions = new Array();
-  var rockQuestions = new Array();
+  constructor() {
+    this.players = new Array();
+    this.places = new Array(6);
+    this.purses = new Array(6);
+    this.inPenaltyBox = new Array(6);
+  
+    this.popQuestions = new Array();
+    this.scienceQuestions = new Array();
+    this.sportsQuestions = new Array();
+    this.rockQuestions = new Array();
+  
+    this.currentPlayer = 0;
+    this.isGettingOutOfPenaltyBox = false;
 
-  var currentPlayer = 0;
-  var isGettingOutOfPenaltyBox = false;
+    for (var i = 0; i < 50; i++) {
+      popQuestions.push("Pop Question " + i);
+      scienceQuestions.push("Science Question " + i);
+      sportsQuestions.push("Sports Question " + i);
+      rockQuestions.push(this.createRockQuestion(i));
+    }
+  }
 
-  var didPlayerWin = function () {
+  didPlayerWin = function () {
     return !(purses[currentPlayer] == 6)
-  };
+  }
 
-  var currentCategory = function () {
+  currentCategory = function () {
     if (places[currentPlayer] == 0)
       return 'Pop';
     if (places[currentPlayer] == 4)
@@ -36,25 +46,17 @@ var Game = function () {
     if (places[currentPlayer] == 10)
       return 'Sports';
     return 'Rock';
-  };
-
-  this.createRockQuestion = function (index) {
-    return "Rock Question " + index;
-  };
-
-  for (var i = 0; i < 50; i++) {
-    popQuestions.push("Pop Question " + i);
-    scienceQuestions.push("Science Question " + i);
-    sportsQuestions.push("Sports Question " + i);
-    rockQuestions.push(this.createRockQuestion(i));
   }
-  ;
 
-  this.isPlayable = function (howManyPlayers) {
+  createRockQuestion(index) {
+    return "Rock Question " + index;
+  }
+  
+  isPlayable(howManyPlayers) {
     return howManyPlayers >= 2;
-  };
+  }
 
-  this.add = function (playerName) {
+  add(playerName) {
     players.push(playerName);
     places[this.howManyPlayers() - 1] = 0;
     purses[this.howManyPlayers() - 1] = 0;
@@ -64,14 +66,13 @@ var Game = function () {
     console.log("They are player number " + players.length);
 
     return true;
-  };
+  }
 
-  this.howManyPlayers = function () {
+  howManyPlayers(){
     return players.length;
-  };
-
-
-  var askQuestion = function () {
+  }
+  
+  askQuestion() {
     if (currentCategory() == 'Pop')
       console.log(popQuestions.shift());
     if (currentCategory() == 'Science')
@@ -80,9 +81,9 @@ var Game = function () {
       console.log(sportsQuestions.shift());
     if (currentCategory() == 'Rock')
       console.log(rockQuestions.shift());
-  };
+  }
 
-  this.roll = function (roll) {
+  roll(roll) {
     console.log(players[currentPlayer] + " is the current player");
     console.log("They have rolled a " + roll);
 
@@ -114,9 +115,9 @@ var Game = function () {
       console.log("The category is " + currentCategory());
       askQuestion();
     }
-  };
+  }
 
-  this.wasCorrectlyAnswered = function () {
+  wasCorrectlyAnswered(){
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
         console.log('Answer was correct!!!!');
@@ -154,9 +155,9 @@ var Game = function () {
 
       return winner;
     }
-  };
+  }
 
-  this.wrongAnswer = function () {
+  wrongAnswer() {
     console.log('Question was incorrectly answered');
     console.log(players[currentPlayer] + " was sent to the penalty box");
     inPenaltyBox[currentPlayer] = true;
@@ -165,27 +166,7 @@ var Game = function () {
     if (currentPlayer == players.length)
       currentPlayer = 0;
     return true;
-  };
-};
-
-var notAWinner = false;
-
-var game = new Game();
-
-game.add('Chet');
-game.add('Pat');
-game.add('Sue');
-
-do {
-
-  game.roll(Math.floor(Math.random() * 6) + 1);
-
-  if (Math.floor(Math.random() * 10) == 7) {
-    notAWinner = game.wrongAnswer();
-  } else {
-    notAWinner = game.wasCorrectlyAnswered();
   }
-
-} while (notAWinner);
+}
 
 module.exports = Game;
