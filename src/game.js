@@ -1,3 +1,5 @@
+const QUESTION_CATEGORY_SIZE = 50;
+
 class Game {
 
   constructor() {
@@ -14,11 +16,15 @@ class Game {
     this.currentPlayer = 0;
     this.isGettingOutOfPenaltyBox = false;
 
-    for (var i = 0; i < 50; i++) {
-      popQuestions.push("Pop Question " + i);
-      scienceQuestions.push("Science Question " + i);
-      sportsQuestions.push("Sports Question " + i);
-      rockQuestions.push(this.createRockQuestion(i));
+    this._initCategories();
+  }
+
+  _initCategories() {
+    for (var i = 0; i < QUESTION_CATEGORY_SIZE; i++) {
+      popQuestions.push(`Pop Question ${i}`);
+      scienceQuestions.push(`Science Question ${i}`);
+      sportsQuestions.push(`Sports Question ${i}`);
+      rockQuestions.push(`Rock Question ${i}`);
     }
   }
 
@@ -46,10 +52,6 @@ class Game {
     if (places[currentPlayer] == 10)
       return 'Sports';
     return 'Rock';
-  }
-
-  createRockQuestion(index) {
-    return "Rock Question " + index;
   }
   
   isPlayable(howManyPlayers) {
