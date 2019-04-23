@@ -7,7 +7,7 @@ class GameBoard {
     this.sportsQuestions = [];
     this.rockQuestions = [];
 
-    for (var i = 0; i < QUESTION_CATEGORY_SIZE; i++) {
+    for (let i = 0; i < QUESTION_CATEGORY_SIZE; i++) {
       this.popQuestions.push(`Pop Question ${i}`);
       this.scienceQuestions.push(`Science Question ${i}`);
       this.sportsQuestions.push(`Sports Question ${i}`);
