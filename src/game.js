@@ -32,26 +32,17 @@ class Game {
     return !(purses[currentPlayer] == 6)
   }
 
-  currentCategory = function () {
-    if (places[currentPlayer] == 0)
-      return 'Pop';
-    if (places[currentPlayer] == 4)
-      return 'Pop';
-    if (places[currentPlayer] == 8)
-      return 'Pop';
-    if (places[currentPlayer] == 1)
-      return 'Science';
-    if (places[currentPlayer] == 5)
-      return 'Science';
-    if (places[currentPlayer] == 9)
-      return 'Science';
-    if (places[currentPlayer] == 2)
-      return 'Sports';
-    if (places[currentPlayer] == 6)
-      return 'Sports';
-    if (places[currentPlayer] == 10)
-      return 'Sports';
-    return 'Rock';
+  currentCategory() {
+    switch(this.places[this.currentPlayer] % 4) {
+      case 0:
+        return 'Pop';
+      case 1:
+        return 'Science';
+      case 2:
+        return 'Sports';
+      default:
+        return 'Rock';
+    }
   }
   
   isPlayable(howManyPlayers) {
@@ -75,13 +66,13 @@ class Game {
   }
   
   askQuestion() {
-    if (currentCategory() == 'Pop')
+    if (this.currentCategory() == 'Pop')
       console.log(popQuestions.shift());
-    if (currentCategory() == 'Science')
+    if (this.currentCategory() == 'Science')
       console.log(scienceQuestions.shift());
-    if (currentCategory() == 'Sports')
+    if (this.currentCategory() == 'Sports')
       console.log(sportsQuestions.shift());
-    if (currentCategory() == 'Rock')
+    if (this.currentCategory() == 'Rock')
       console.log(rockQuestions.shift());
   }
 
@@ -100,7 +91,7 @@ class Game {
         }
 
         console.log(players[currentPlayer] + "'s new location is " + places[currentPlayer]);
-        console.log("The category is " + currentCategory());
+        console.log("The category is " + this.currentCategory());
         askQuestion();
       } else {
         console.log(players[currentPlayer] + " is not getting out of the penalty box");
@@ -114,7 +105,7 @@ class Game {
       }
 
       console.log(players[currentPlayer] + "'s new location is " + places[currentPlayer]);
-      console.log("The category is " + currentCategory());
+      console.log("The category is " + this.currentCategory());
       askQuestion();
     }
   }
