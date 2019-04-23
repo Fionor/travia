@@ -1,46 +1,16 @@
 const Player = require('./player')
-
-const QUESTION_CATEGORY_SIZE = 50;
+const GameBoard = require('./game_board')
 
 class Game {
-
   constructor() {
     this.players = new Array();
-  
-    this.popQuestions = new Array();
-    this.scienceQuestions = new Array();
-    this.sportsQuestions = new Array();
-    this.rockQuestions = new Array();
-  
     this.currentPlayerIndex = 0;
 
-    this._initCategories();
-  }
-
-  _initCategories() {
-    for (var i = 0; i < QUESTION_CATEGORY_SIZE; i++) {
-      this.popQuestions.push(`Pop Question ${i}`);
-      this.scienceQuestions.push(`Science Question ${i}`);
-      this.sportsQuestions.push(`Sports Question ${i}`);
-      this.rockQuestions.push(`Rock Question ${i}`);
-    }
+    this.board = new GameBoard()
   }
 
   willContinue() {
     return this.getCurrentPlayer().purse != 6;
-  }
-
-  currentCategory(place) {
-    switch(place % 4) {
-      case 0:
-        return 'Pop';
-      case 1:
-        return 'Science';
-      case 2:
-        return 'Sports';
-      default:
-        return 'Rock';
-    }
   }
   
   isPlayable(howManyPlayers) {
@@ -71,26 +41,16 @@ class Game {
     if (this.currentPlayerIndex == this.players.length)
       this.currentPlayerIndex = 0;
   }
-  
-  askQuestion(place) {
-    const currentCategory = this.currentCategory(place);
-
-    if (currentCategory == 'Pop')
-      return this.popQuestions.shift();
-    if (currentCategory == 'Science')
-      return this.scienceQuestions.shift();
-    if (currentCategory == 'Sports')
-      return this.sportsQuestions.shift();
-    if (currentCategory == 'Rock')
-      return this.rockQuestions.shift();
-  }
 
   movePlayerByRoll(roll, player) {
     player.move(roll);
     console.log(`${player.name}'s new location is ${player.place}`);
 
-    console.log(`The category is ${this.currentCategory(player.place)}`);
-    console.log(this.askQuestion(player.place));
+    const category = this.board.getCategory(player.place);
+    console.log(`The category is ${category}`);
+
+    const question = this.board.getQuestion(player.place);
+    console.log(question);
   }
 
   roll(roll) {
