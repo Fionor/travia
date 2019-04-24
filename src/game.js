@@ -49,7 +49,7 @@ class Game {
     const category = this.board.getCategory(player.place);
     console.log(`The category is ${category}`);
 
-    const question = this.board.getQuestion(player.place);
+    const question = this.board.getQuestion(category);
     console.log(question);
   }
 
